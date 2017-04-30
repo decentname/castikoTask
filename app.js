@@ -10,41 +10,66 @@ client.sadd('deck',["C1","C2","C3","C4","C5","C6","C7","C8","C9","C10","C11","C1
 
 
 app.use(cors());
+app.set('views', path.join(__dirname, 'views'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.get('/',function(req,res){
-	
+	res.render('welcome')
 })
 
 //Api to generate deck for new users
-app.get('/deck/username',function(req,res){
+app.get('/deck/',function(req,res){
 	console.log("requested deck");
-	console.log(req);
-	// console.log(req.Url.query);
-	console.log(req.query.username);
-	// var username = req.Url.query;
+	var username = req.query.username;
 	client.sismember('users',username,function(err,result){
-		console.log(err,result);
+		console.log("ismember",result);
 		if(result==0){
 			//Not a member
-
 			client.sadd('users',username,function(err,re){
-				client.sunionstore(username+':deck',deck,function(err,resp){
+				console.log("added user",re);
+				client.sunionstore(username+':deck','deck',function(err,resp){
 					//prepared deck
-					// console.log(err,res);
-					client.smembers(username+':deck',function(err,resp){
+					console.log("union",resp);
+					client.smembers(username+':deck',function(err,arr){
 						// var result = res;
-						res.send(resp);
+						console.log("userdeck",arr);
+						res.send(arr);
+						// res.render('index');
 					})	
 				})	
 			})
 		}else{
 			client.smembers(username+':deck',function(err,resp){
-				// var result = res;
 				res.send(resp);
+				// res.render('index');
 			})
 		}
+	})
+
+	// res.render('index')
+})
+
+app.get('/updateDeck/',function(req,res){
+	var username = req.query.username;
+	var card = req.query.val;
+	var deck = username+':deck';
+	client.srem(deck,card,function(err,res){
+		console.log("srem",err,res);
+	})
+})
+
+
+app.get('/remUser/',function(req,res){
+	var username = req.query.username;
+	// var card = req.query.val;
+	var deck = username+':deck';
+	client.srem('users',username,function(err,resp){
+		client.del(username+":deck",function(err,re){
+			console.log(re);
+			res.send(re);
+		})
 	})
 })
 
