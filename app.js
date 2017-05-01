@@ -71,7 +71,7 @@ app.get('/removeUser/',function(req,res){
 	client.srem('users',username,function(err,resp){
 		client.del(username+":deck",function(err,re){
 			// console.log(re);
-			res.send(re);
+			res.send("removed user and added deck");
 		})
 	})
 })

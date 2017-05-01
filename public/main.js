@@ -38,6 +38,11 @@ function getCards(username){
     success: function(data,textStatus,xhr){
       // console.log(data);
       cards = data;
+      if(cards.length < 26){
+        $('#cardPile').css('height','400px');
+      }else{
+        $('#cardPile').css('height','620px');
+      }
       $(init);
       // console.log(cards);
       // console.log(cards.length());
