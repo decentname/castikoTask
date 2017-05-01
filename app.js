@@ -16,7 +16,7 @@ app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/',function(req,res){
-	res.render('welcome')
+	res.render('index')
 })
 
 //Api to generate deck for new users
@@ -47,27 +47,30 @@ app.get('/deck/',function(req,res){
 			})
 		}
 	})
-
-	// res.render('index')
 })
 
 app.get('/updateDeck/',function(req,res){
+	// console.log("pressed");
 	var username = req.query.username;
 	var card = req.query.val;
 	var deck = username+':deck';
-	client.srem(deck,card,function(err,res){
-		console.log("srem",err,res);
+	console.log(card);
+	client.srem(deck,card,function(err,resp){
+		// console.log("srem",err,res);
+		client.scard(deck,function(err,result){
+			res.send(result.toString());
+		})
 	})
 })
 
 
-app.get('/remUser/',function(req,res){
+app.get('/removeUser/',function(req,res){
 	var username = req.query.username;
 	// var card = req.query.val;
 	var deck = username+':deck';
 	client.srem('users',username,function(err,resp){
 		client.del(username+":deck",function(err,re){
-			console.log(re);
+			// console.log(re);
 			res.send(re);
 		})
 	})

@@ -76,6 +76,7 @@ h1, h2, h3, h4 {
   width: 420px;
   height: 140px;
   padding: 20px;
+  position: absolute;
   border: 2px solid #333;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -83,7 +84,6 @@ h1, h2, h3, h4 {
   -moz-box-shadow: 0 0 .3em rgba(0, 0, 0, .8);
   -webkit-box-shadow: 0 0 .3em rgba(0, 0, 0, .8);
   box-shadow: 0 0 .3em rgba(0, 0, 0, .8);
-
 }
 
 /* Individual cards and slots */
@@ -128,20 +128,7 @@ h1, h2, h3, h4 {
   -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
   box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
 }
- 
-/* Individually coloured cards */
- /*
-#card1.correct { background: red; }
-#card2.correct { background: brown; }
-#card3.correct { background: orange; }
-#card4.correct { background: yellow; }
-#card5.correct { background: green; }
-#card6.correct { background: cyan; }
-#card7.correct { background: blue; }
-#card8.correct { background: indigo; }
-#card9.correct { background: purple; }
-#card10.correct { background: violet; }
- */
+
  
 /* "You did it!" message */
 #successMessage {

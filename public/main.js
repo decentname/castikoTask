@@ -1,10 +1,9 @@
-var correctCards = 0;
 var username;
 var cards = [];
 $("#entry").click(function(){
-  console.log('clicked');
+  // console.log('clicked');
   username = $("#user").val();
-  console.log(username);
+  // console.log(username);
   getCards(username);
 })
 
@@ -37,7 +36,7 @@ function getCards(username){
     url: "http://localhost:3000/deck/",
     data: {'username':username},
     success: function(data,textStatus,xhr){
-      console.log(data);
+      // console.log(data);
       cards = data;
       $(init);
       // console.log(cards);
@@ -53,8 +52,10 @@ function popCards(username,val){
     data: {'username':username,'val':val},
     success: function(data,textStatus,xhr){
       console.log(data);
-      // console.log(cards);
-      // console.log(cards.length());
+      if(data == '0'){
+        //call success
+        success();
+      }
     }
   });
 } 
@@ -65,21 +66,6 @@ $('#logout').css("display","block");
 $('#content').css("display","block");
 $('#user').css("display","none");
 $('#entry').css("display","none");
-
-//   $('body').html(`<button id ="logout">Logout</button>
-// <div id="content">
- 
-//   <div id="cardPile"> </div>
-//   <div id="cardSlots"> </div>
- 
-//   <div id="successMessage">
-//     <h2>You did it!</h2>
-//     <button onclick="init()">Play Again</button>
-//   </div>
- 
-// </div>
-// <script src="main.js"></script>`);
-
 
   // Hide the success message
   $('#successMessage').hide();
@@ -136,15 +122,16 @@ function handleCardDrop( event, ui ) {
     // $(this).droppable( 'disable' );
     ui.draggable.position( { of: $(this), my: 'left top', at: 'left top' } );
     ui.draggable.draggable( 'option', 'revert', false );
-    correctCards++;
     //spop each card
     popCards(username,val);
   } 
    
   // If all the cards have been placed correctly then display a message
   // and reset the cards for another go
- 
-  if ( correctCards == 52 ) {
+
+}
+
+function success(){
     $('#successMessage').show();
     $('#successMessage').animate( {
       left: '380px',
@@ -153,6 +140,4 @@ function handleCardDrop( event, ui ) {
       height: '100px',
       opacity: 1
     } );
-  }
 }
-
